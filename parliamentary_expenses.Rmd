@@ -1,0 +1,17 @@
+---
+title: "Gastos dos Deputados"
+author: "Gustavo Monteiro"
+date: "27 de agosto de 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+```
+```{r}
+data = read_csv("./data.csv")
+
+
+```
+
+
