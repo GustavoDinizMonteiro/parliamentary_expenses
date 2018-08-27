@@ -33,11 +33,43 @@ summarized_data %>%
 ```
 
 ```{r}
-# Quais os estados cujos deputados gastam mais no exterior? Quais os estados cujos deputados gastam menos no exterior? 
+# Quais os estados cujos deputados gastam mais no exterior? Quais os estados cujos deputados gastam menos no exterior?
+e_exprenses = data %>% 
+  filter(tipoDocumento == 2) %>% 
+  group_by(nomeParlamentar) %>% 
+  summarise(gastos = sum(valorDocumento))
+
+e_exprenses %>% 
+  top_n(5, gastos) %>% 
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
+  geom_col(width = 0.7) +
+    coord_flip()
+
+e_exprenses %>% 
+  tail(5, gastos) %>% 
+  ggplot(aes(x = reorder(nomeParlamentar, -gastos), y = gastos, fill = nomeParlamentar)) +
+  geom_col(width = 0.7) +
+  coord_flip()
 ```
 
 ```{r}
 # Quais os partidos cujos parlamentares mais usam CEAP no estado da Paraíba? Quais são os que menos usam? Mesmas perguntas considerando valores em R$.
+part = data %>%
+  filter(sgUF == "PB") %>% 
+  group_by(sgPartido) %>% 
+  summarise(gastos = sum(valorDocumento))
+
+part %>% 
+  top_n(5, gastos) %>% 
+  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
+  geom_col(width = 0.7) +
+    coord_flip()
+
+part %>% 
+  tail(5, gastos) %>% 
+  ggplot(aes(x = reorder(sgPartido, -gastos), y = gastos, fill = sgPartido)) +
+  geom_col(width = 0.7) +
+  coord_flip()
 ```
 
 ```{r}
