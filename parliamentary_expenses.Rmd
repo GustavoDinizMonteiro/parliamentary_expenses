@@ -7,9 +7,12 @@ output: html_document
 
 ```{r}
 library(tidyverse)
-```
-```{r}
 data = read_csv("./data.csv")
+limit = read.csv("./limit.csv")
+
+colnames(data)[3] <- "UF"
+data = data %>%
+  full_join(limit, by=c("UF", "UF"))
 ```
 
 ```{r}
@@ -55,7 +58,7 @@ e_exprenses %>%
 ```{r}
 # Quais os partidos cujos parlamentares mais usam CEAP no estado da Paraíba? Quais são os que menos usam? Mesmas perguntas considerando valores em R$.
 part = data %>%
-  filter(sgUF == "PB") %>% 
+  filter(UF == "PB") %>% 
   group_by(sgPartido) %>% 
   summarise(gastos = sum(valorDocumento))
 
@@ -74,13 +77,21 @@ part %>%
 
 ```{r}
 # Quais os deputados que mais ultrapassam o limite de CEAP do seu estado?
+rm_limit = data %>% 
+  filter(!is.na(dataEmissao)) %>% 
+  group_by(nomeParlamentar, format(dataEmissao, "%m"), format(dataEmissao, "%y")) %>% 
+  summarise(gastos = sum(valorLíquido), limite = mean(limite_mensal)) %>% 
+  filter(gastos > limite) %>%
+  group_by(nomeParlamentar) %>%
+  summarise(gastos = max(gastos)) %>% 
+  top_n(10, gastos)
 ```
 
 ```{r}
 # Quais estados cujos parlamentares gastam mais com passagens aéreas?
 flyers = data %>%
   filter(tipoDespesa == "Emissão Bilhete Aéreo") %>% 
-  group_by(sgUF) %>% 
+  group_by(UF) %>% 
   summarise(gastos = sum(valorDocumento))
 ```
 
