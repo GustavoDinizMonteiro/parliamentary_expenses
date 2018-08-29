@@ -24,14 +24,15 @@ summarized_data = data %>%
 
 summarized_data %>% 
   top_n(5, gastos) %>% 
-  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
-  geom_col(width = 0.7) +
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
+  geom_col(width = 0.5) +
     coord_flip()
 
-summarized_data %>% 
-  tail(5, gastos) %>% 
-  ggplot(aes(x = reorder(nomeParlamentar, -gastos), y = gastos, fill = nomeParlamentar)) +
-  geom_col(width = 0.7) +
+summarized_data %>%
+  arrange(gastos) %>%
+  slice(1:5) %>%
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
+  geom_col(width = 0.5) +
   coord_flip()
 ```
 
