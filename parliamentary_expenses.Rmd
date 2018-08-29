@@ -78,10 +78,30 @@ part %>%
 
 ```{r}
 # Quais estados cujos parlamentares gastam mais com passagens aéreas?
+flyers = data %>%
+  filter(tipoDespesa == "Emissão Bilhete Aéreo") %>% 
+  group_by(sgUF) %>% 
+  summarise(gastos = sum(valorDocumento))
 ```
 
 ```{r}
 # Escolha três partidos e responda: Quais são os tipos de despesa mais utilizados no uso da CEAP pelos deputados desses partidos? Mesma pergunta considerando valores em R$.
+
+dem = data %>%
+  filter(sgPartido == "DEM") %>% 
+  group_by(tipoDespesa) %>% 
+  summarise(gastos = sum(valorDocumento))
+
+psl = data %>%
+  filter(sgPartido == "PSL") %>% 
+  group_by(tipoDespesa) %>% 
+  summarise(gastos = sum(valorDocumento))
+
+
+avante = data %>%
+  filter(sgPartido == "AVANTE") %>% 
+  group_by(tipoDespesa) %>% 
+  summarise(gastos = sum(valorDocumento))
 ```
 
 
