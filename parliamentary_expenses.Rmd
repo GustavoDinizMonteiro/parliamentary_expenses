@@ -5,15 +5,22 @@ date: "27 de agosto de 2018"
 output: html_document
 ---
 
-```{r}
+```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
+library(gridExtra)
+
 data = read_csv("./data.csv")
 limit = read.csv("./limit.csv")
+options(scipen = 999)
+```
 
+```{r warning=FALSE}
+# Join two datasets by UF column to use state ceap spending limit.
 colnames(data)[3] <- "UF"
 data = data %>%
   full_join(limit, by=c("UF", "UF"))
 ```
+
 
 ```{r}
 # Quais são os deputados que gastaram mais dinheiro da CEAP? Quais são os mais econômicos?
@@ -22,18 +29,24 @@ summarized_data = data %>%
     group_by(nomeParlamentar) %>% 
     summarise(gastos = sum(valorDocumento))
 
-summarized_data %>% 
+more_spenders <- summarized_data %>% 
   top_n(5, gastos) %>% 
   ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
+  guides(fill = guide_legend('Deputados')) +
+  labs(x='Deputados', y='Gasto total') + 
   geom_col(width = 0.5) +
-    coord_flip()
+  coord_flip()
 
-summarized_data %>%
+less_expenders <- summarized_data %>%
   arrange(gastos) %>%
   slice(1:5) %>%
   ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
+  guides(fill = guide_legend('Deputados')) +
+  labs(x='Deputados', y='Gasto total') + 
   geom_col(width = 0.5) +
   coord_flip()
+
+grid.arrange(more_spenders, less_expenders, nrow = 2)
 ```
 
 ```{r}
@@ -43,17 +56,24 @@ e_exprenses = data %>%
   group_by(nomeParlamentar) %>% 
   summarise(gastos = sum(valorDocumento))
 
-e_exprenses %>% 
+greatest_backpackers <- e_exprenses %>% 
   top_n(5, gastos) %>% 
   ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
-  geom_col(width = 0.7) +
-    coord_flip()
-
-e_exprenses %>% 
-  tail(5, gastos) %>% 
-  ggplot(aes(x = reorder(nomeParlamentar, -gastos), y = gastos, fill = nomeParlamentar)) +
+  guides(fill = guide_legend('Deputados')) +
+  labs(x='Deputados', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
+
+less_backpackers <- e_exprenses %>% 
+  arrange(gastos) %>%
+  slice(1:5) %>%
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
+  guides(fill = guide_legend('Deputados')) +
+  labs(x='Deputados', y='Gasto total') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+grid.arrange(greatest_backpackers, less_backpackers, nrow = 2)
 ```
 
 ```{r}
@@ -61,20 +81,41 @@ e_exprenses %>%
 part = data %>%
   filter(UF == "PB") %>% 
   group_by(sgPartido) %>% 
-  summarise(gastos = sum(valorDocumento))
+  summarise(gastos = sum(valorDocumento), n = n())
 
-part %>% 
+top_spenders_R <- part %>% 
   top_n(5, gastos) %>% 
   ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
   geom_col(width = 0.7) +
     coord_flip()
 
-part %>% 
-  tail(5, gastos) %>% 
-  ggplot(aes(x = reorder(sgPartido, -gastos), y = gastos, fill = sgPartido)) +
+less_spenders_R <- part %>% 
+  arrange(gastos) %>%
+  slice(1:5) %>%
+  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
   geom_col(width = 0.7) +
   coord_flip()
+
+grid.arrange(top_spenders_R, less_spenders_R, nrow = 2)
 ```
+```{r}
+top_spenders_N <- part %>% 
+  top_n(5, n) %>% 
+  ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
+  geom_col(width = 0.7) +
+  coord_flip()
+
+less_spenders_N <- part %>% 
+  arrange(n) %>%
+  slice(1:5) %>%
+  ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
+  geom_col(width = 0.7) +
+  coord_flip()
+
+grid.arrange(top_spenders_N, less_spenders_N, nrow = 2)
+```
+
+
 
 ```{r}
 # Quais os deputados que mais ultrapassam o limite de CEAP do seu estado?
