@@ -86,13 +86,17 @@ part = data %>%
 top_spenders_R <- part %>% 
   top_n(5, gastos) %>% 
   ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
+  guides(fill = guide_legend('Partidos')) +
+  labs(x='Partidos', y='Gasto total') + 
   geom_col(width = 0.7) +
-    coord_flip()
+  coord_flip()
 
 less_spenders_R <- part %>% 
   arrange(gastos) %>%
   slice(1:5) %>%
   ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
+  guides(fill = guide_legend('Partidos')) +
+  labs(x='Partidos', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
 
@@ -102,6 +106,8 @@ grid.arrange(top_spenders_R, less_spenders_R, nrow = 2)
 top_spenders_N <- part %>% 
   top_n(5, n) %>% 
   ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
+  guides(fill = guide_legend('Partidos')) +
+  labs(x='Partidos', y='Vezes que usou o CEAP') + 
   geom_col(width = 0.7) +
   coord_flip()
 
@@ -109,6 +115,8 @@ less_spenders_N <- part %>%
   arrange(n) %>%
   slice(1:5) %>%
   ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
+  guides(fill = guide_legend('Partidos')) +
+  labs(x='Partidos', y='Vezes que usou o CEAP') + 
   geom_col(width = 0.7) +
   coord_flip()
 
