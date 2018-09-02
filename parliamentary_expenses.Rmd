@@ -135,6 +135,13 @@ rm_limit = data %>%
   group_by(nomeParlamentar) %>%
   summarise(gastos = max(gastos)) %>% 
   top_n(10, gastos)
+
+rm_limit %>% 
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
+  guides(fill = guide_legend('Partidos')) +
+  labs(x='Partidos', y='Gastos Totais') + 
+  geom_col(width = 0.7) +
+  coord_flip()
 ```
 
 ```{r}
