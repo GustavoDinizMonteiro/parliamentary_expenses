@@ -166,18 +166,69 @@ flyers %>%
 dem = data %>%
   filter(sgPartido == "DEM") %>% 
   group_by(tipoDespesa) %>% 
-  summarise(gastos = sum(valorDocumento))
+  summarise(gastos = sum(valorDocumento), n = n())
 
+dem_top_spend_r <- 
+  dem %>% top_n(5, gastos) %>% 
+  ggplot(aes(x = reorder(tipoDespesa, gastos), y = gastos)) +
+  labs(x='Tipo de Despesa', y='Gastos Totais') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+dem_top_spend_n <- 
+  dem %>% top_n(5, n) %>% 
+  ggplot(aes(x = reorder(n, gastos), y = n)) +
+  labs(x='Tipo de Despesa', y='Vezes que usou o CEAP') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+grid.arrange(dem_top_spend_r, dem_top_spend_n, nrow = 2)
+```
+
+```{r}
 psl = data %>%
   filter(sgPartido == "PSL") %>% 
   group_by(tipoDespesa) %>% 
-  summarise(gastos = sum(valorDocumento))
+  summarise(gastos = sum(valorDocumento), n = n())
 
+psl_top_spend_r <- 
+  psl %>% top_n(5, gastos) %>% 
+  ggplot(aes(x = reorder(tipoDespesa, gastos), y = gastos)) +
+  labs(x='Tipo de Despesa', y='Gastos Totais') + 
+  geom_col(width = 0.7) +
+  coord_flip()
 
+psl_top_spend_n <- 
+  psl %>% top_n(5, n) %>% 
+  ggplot(aes(x = reorder(n, gastos), y = n)) +
+  labs(x='Tipo de Despesa', y='Vezes que usou o CEAP') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+grid.arrange(psl_top_spend_r, psl_top_spend_n, nrow = 2)
+```
+
+```{r}
 avante = data %>%
   filter(sgPartido == "AVANTE") %>% 
   group_by(tipoDespesa) %>% 
-  summarise(gastos = sum(valorDocumento))
-```
+  summarise(gastos = sum(valorDocumento), n = n())
 
+avante_top_spend_r <- 
+  avante %>% top_n(5, gastos) %>% 
+  ggplot(aes(x = reorder(tipoDespesa, gastos), y = gastos)) +
+  labs(x='Tipo de Despesa', y='Gastos Totais') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+avante_top_spend_n <- 
+  avante %>% top_n(5, n) %>% 
+  ggplot(aes(x = reorder(n, gastos), y = n)) +
+  labs(x='Tipo de Despesa', y='Vezes que usou o CEAP') + 
+  geom_col(width = 0.7) +
+  coord_flip()
+
+grid.arrange(avante_top_spend_r, avante_top_spend_n, nrow = 2)
+
+```
 
