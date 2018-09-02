@@ -149,7 +149,15 @@ rm_limit %>%
 flyers = data %>%
   filter(tipoDespesa == "Emissão Bilhete Aéreo") %>% 
   group_by(UF) %>% 
-  summarise(gastos = sum(valorDocumento))
+  summarise(gastos = sum(valorDocumento)) %>% 
+  top_n(5, gastos)
+
+flyers %>% 
+  ggplot(aes(x = reorder(UF, gastos), y = gastos, fill = UF)) +
+  guides(fill = guide_legend('Estados')) +
+  labs(x='Estados', y='Gastos Totais') + 
+  geom_col(width = 0.7) +
+  coord_flip()
 ```
 
 ```{r}
