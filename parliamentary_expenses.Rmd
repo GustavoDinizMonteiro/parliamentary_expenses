@@ -2,7 +2,10 @@
 title: "Gastos dos Deputados"
 author: "Gustavo Monteiro"
 date: "27 de agosto de 2018"
-output: html_document
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
 ---
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -11,9 +14,11 @@ library(gridExtra)
 
 data = read_csv("./data.csv")
 limit = read.csv("./limit.csv")
+
+theme_set(theme_gray())
 options(scipen = 999)
 ```
-
+# Dados
 ```{r warning=FALSE}
 # Join two datasets by UF column to use state ceap spending limit.
 colnames(data)[3] <- "UF"
@@ -21,9 +26,10 @@ data = data %>%
   full_join(limit, by=c("UF", "UF"))
 ```
 
+# Questionamentos
 
+## Quais são os deputados que gastaram mais dinheiro da CEAP? Quais são os mais econômicos?
 ```{r}
-# Quais são os deputados que gastaram mais dinheiro da CEAP? Quais são os mais econômicos?
 summarized_data = data %>% 
     filter(valorDocumento > 0) %>% 
     group_by(nomeParlamentar) %>% 
@@ -49,8 +55,8 @@ less_expenders <- summarized_data %>%
 grid.arrange(more_spenders, less_expenders, nrow = 2)
 ```
 
+## Quais os estados cujos deputados gastam mais no exterior? Quais os estados cujos deputados gastam menos no exterior?
 ```{r}
-# Quais os estados cujos deputados gastam mais no exterior? Quais os estados cujos deputados gastam menos no exterior?
 e_exprenses = data %>% 
   filter(tipoDocumento == 2) %>% 
   group_by(nomeParlamentar) %>% 
