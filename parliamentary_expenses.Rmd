@@ -19,6 +19,29 @@ theme_set(theme_gray())
 options(scipen = 999)
 ```
 # Dados
+
+  Os dados usado nessa análise sobre a despesa de deputados federais da legisLatura atual com a atividade parlamentar. 
+  A CEAP (cota para o exercício da atividade parlamentar) é uma cota única mensal destinada a custear os gastos dos deputados exclusivamente vinculados ao exercício da atividade parlamentar.
+  Exemplos de despesa desse tipo são: passagens aéreas, telefonia, serviços postais, manutenção de escritórios de apoio à atividade parlamentar, assinatura de publicações, fornecimento de alimentação ao parlamentar, hospedagem, outras despesas com locomoção, contemplando locação ou fretamento de aeronaves, veículos automotores e embarcações, serviços de táxi, pedágio e estacionamento e passagens terrestres.
+EX:
+```{r}
+  sample_n(data, n=10)
+```
+Para uma melhor descrição dos tipos dos dados:
+```{r}
+sapply(data, class)
+```
+E o segundo conjunto de dados consiste em informações do limite mensal de uso do CEAP no estado, para cada um dos estados e Distrito Federal.
+EX:
+```{r}
+  sample_n(limit, n=10)
+```
+Para uma melhor descrição dos tipos dos dados:
+```{r}
+  sapply(limit, class)
+```
+
+Para melhor aproveitamento de ambos os datasets para que se possa usar os dados de limite de uso de CEAP estadual junto ao gasto mensal do parlamentar será feito um join dos dois datasets com base na coluna de estado.
 ```{r warning=FALSE}
 # Join two datasets by UF column to use state ceap spending limit.
 colnames(data)[3] <- "UF"
@@ -27,6 +50,7 @@ data = data %>%
 ```
 
 # Questionamentos
+O estudo visa responder os seguintes questionamentos:
 
 ## Quais são os deputados que gastaram mais dinheiro da CEAP? Quais são os mais econômicos?
 ```{r}
@@ -82,8 +106,9 @@ less_backpackers <- e_exprenses %>%
 grid.arrange(greatest_backpackers, less_backpackers, nrow = 2)
 ```
 
+## Quais os partidos cujos parlamentares mais usam CEAP no estado da Paraíba considerando valores em R$. Quais são os que menos usam?
+
 ```{r}
-# Quais os partidos cujos parlamentares mais usam CEAP no estado da Paraíba? Quais são os que menos usam? Mesmas perguntas considerando valores em R$.
 part = data %>%
   filter(UF == "PB") %>% 
   group_by(sgPartido) %>% 
@@ -108,6 +133,8 @@ less_spenders_R <- part %>%
 
 grid.arrange(top_spenders_R, less_spenders_R, nrow = 2)
 ```
+
+## Quais os partidos cujos parlamentares mais usam CEAP no estado da Paraíba considerado número de vezes ? Quais são os que menos usam?
 ```{r}
 top_spenders_N <- part %>% 
   top_n(5, n) %>% 
@@ -129,10 +156,8 @@ less_spenders_N <- part %>%
 grid.arrange(top_spenders_N, less_spenders_N, nrow = 2)
 ```
 
-
-
+## Quais os deputados que mais ultrapassam o limite de CEAP do seu estado?
 ```{r}
-# Quais os deputados que mais ultrapassam o limite de CEAP do seu estado?
 rm_limit = data %>% 
   filter(!is.na(dataEmissao)) %>% 
   group_by(nomeParlamentar, format(dataEmissao, "%m"), format(dataEmissao, "%y")) %>% 
@@ -150,8 +175,8 @@ rm_limit %>%
   coord_flip()
 ```
 
-```{r}
 # Quais estados cujos parlamentares gastam mais com passagens aéreas?
+```{r}
 flyers = data %>%
   filter(tipoDespesa == "Emissão Bilhete Aéreo") %>% 
   group_by(UF) %>% 
@@ -166,9 +191,10 @@ flyers %>%
   coord_flip()
 ```
 
-```{r}
-# Escolha três partidos e responda: Quais são os tipos de despesa mais utilizados no uso da CEAP pelos deputados desses partidos? Mesma pergunta considerando valores em R$.
+## Escolha três partidos e responda: Quais são os tipos de despesa mais utilizados no uso da CEAP pelos deputados desses partidos? Mesma pergunta considerando valores em R$.
 
+Para esse questionamento foi escolhido os partidos `DEM`, `PSL` e `AVANTE`.
+```{r}
 dem = data %>%
   filter(sgPartido == "DEM") %>% 
   group_by(tipoDespesa) %>% 
