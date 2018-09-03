@@ -25,7 +25,7 @@ options(scipen = 999)
   Exemplos de despesa desse tipo são: passagens aéreas, telefonia, serviços postais, manutenção de escritórios de apoio à atividade parlamentar, assinatura de publicações, fornecimento de alimentação ao parlamentar, hospedagem, outras despesas com locomoção, contemplando locação ou fretamento de aeronaves, veículos automotores e embarcações, serviços de táxi, pedágio e estacionamento e passagens terrestres.
 EX:
 ```{r}
-  sample_n(data, n=10)
+  sample_n(data, 5)
 ```
 Para uma melhor descrição dos tipos dos dados:
 ```{r}
@@ -34,7 +34,7 @@ sapply(data, class)
 E o segundo conjunto de dados consiste em informações do limite mensal de uso do CEAP no estado, para cada um dos estados e Distrito Federal.
 EX:
 ```{r}
-  sample_n(limit, n=10)
+  sample_n(limit, 5)
 ```
 Para uma melhor descrição dos tipos dos dados:
 ```{r}
@@ -88,8 +88,7 @@ e_exprenses = data %>%
 
 greatest_backpackers <- e_exprenses %>% 
   top_n(5, gastos) %>% 
-  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
-  guides(fill = guide_legend('Deputados')) +
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
   labs(x='Deputados', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -97,8 +96,7 @@ greatest_backpackers <- e_exprenses %>%
 less_backpackers <- e_exprenses %>% 
   arrange(gastos) %>%
   slice(1:5) %>%
-  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos, fill = nomeParlamentar)) +
-  guides(fill = guide_legend('Deputados')) +
+  ggplot(aes(x = reorder(nomeParlamentar, gastos), y = gastos)) +
   labs(x='Deputados', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -116,8 +114,7 @@ part = data %>%
 
 top_spenders_R <- part %>% 
   top_n(5, gastos) %>% 
-  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
-  guides(fill = guide_legend('Partidos')) +
+  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos)) +
   labs(x='Partidos', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -125,8 +122,7 @@ top_spenders_R <- part %>%
 less_spenders_R <- part %>% 
   arrange(gastos) %>%
   slice(1:5) %>%
-  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos, fill = sgPartido)) +
-  guides(fill = guide_legend('Partidos')) +
+  ggplot(aes(x = reorder(sgPartido, gastos), y = gastos)) +
   labs(x='Partidos', y='Gasto total') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -138,8 +134,7 @@ grid.arrange(top_spenders_R, less_spenders_R, nrow = 2)
 ```{r}
 top_spenders_N <- part %>% 
   top_n(5, n) %>% 
-  ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
-  guides(fill = guide_legend('Partidos')) +
+  ggplot(aes(x = reorder(sgPartido, n), y = gastos)) +
   labs(x='Partidos', y='Vezes que usou o CEAP') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -147,8 +142,7 @@ top_spenders_N <- part %>%
 less_spenders_N <- part %>% 
   arrange(n) %>%
   slice(1:5) %>%
-  ggplot(aes(x = reorder(sgPartido, n), y = gastos, fill = sgPartido)) +
-  guides(fill = guide_legend('Partidos')) +
+  ggplot(aes(x = reorder(sgPartido, n), y = gastos)) +
   labs(x='Partidos', y='Vezes que usou o CEAP') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -184,8 +178,7 @@ flyers = data %>%
   top_n(5, gastos)
 
 flyers %>% 
-  ggplot(aes(x = reorder(UF, gastos), y = gastos, fill = UF)) +
-  guides(fill = guide_legend('Estados')) +
+  ggplot(aes(x = reorder(UF, gastos), y = gastos)) +
   labs(x='Estados', y='Gastos Totais') + 
   geom_col(width = 0.7) +
   coord_flip()
@@ -194,6 +187,9 @@ flyers %>%
 ## Escolha três partidos e responda: Quais são os tipos de despesa mais utilizados no uso da CEAP pelos deputados desses partidos? Mesma pergunta considerando valores em R$.
 
 Para esse questionamento foi escolhido os partidos `DEM`, `PSL` e `AVANTE`.
+
+### Primeiramente o `DEM`
+
 ```{r}
 dem = data %>%
   filter(sgPartido == "DEM") %>% 
@@ -217,6 +213,8 @@ dem_top_spend_n <-
 grid.arrange(dem_top_spend_r, dem_top_spend_n, nrow = 2)
 ```
 
+### e agora `PSL`
+
 ```{r}
 psl = data %>%
   filter(sgPartido == "PSL") %>% 
@@ -239,6 +237,8 @@ psl_top_spend_n <-
 
 grid.arrange(psl_top_spend_r, psl_top_spend_n, nrow = 2)
 ```
+
+### e por último `AVANTE`
 
 ```{r}
 avante = data %>%
