@@ -1,0 +1,21 @@
+---
+title: "Gastos dos Deputados - Minhas Perguntas"
+author: "Gustavo Monteiro"
+date: "September 4, 2018"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(gridExtra)
+
+data = read_csv("./data.csv")
+limit = read.csv("./limit.csv")
+
+theme_set(theme_gray())
+options(scipen = 999)
+```
+
