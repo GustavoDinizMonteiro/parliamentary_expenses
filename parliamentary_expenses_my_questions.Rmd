@@ -50,3 +50,6 @@ data = data %>%
 ```
 
 # Questionamentos
+## 1 - Existiram deputados que foram outliers no quesito gastos, tanto por gastar muito ou pouco ?
+
+## 2 - 

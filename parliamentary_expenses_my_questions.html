@@ -87,11 +87,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <pre><code>## # A tibble: 5 x 13
 ##   nomeParlamentar idCadastro sgUF  sgPartido tipoDespesa especDespesa
 ##   &lt;chr&gt;                &lt;int&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;       &lt;chr&gt;       
-## 1 FÁBIO FARIA         141428 RN    PSD       SERVIÇOS P… &lt;NA&gt;        
-## 2 ADAIL CARNEIRO      178864 CE    PP        FORNECIMEN… &lt;NA&gt;        
-## 3 CARLOS MARUN        178900 MS    PMDB      SERVIÇOS P… &lt;NA&gt;        
-## 4 LUIS CARLOS HE…      73483 RS    PP        COMBUSTÍVE… Veículos Au…
-## 5 MANDETTA            160633 MS    DEM       Emissão Bi… &lt;NA&gt;        
+## 1 ERIVELTON SANT…      99654 BA    PEN       COMBUSTÍVE… Veículos Au…
+## 2 LUCIANA SANTOS      160628 PE    PCdoB     MANUTENÇÃO… &lt;NA&gt;        
+## 3 FELIPE MAIA         141429 RN    DEM       Emissão Bi… &lt;NA&gt;        
+## 4 FABRICIO OLIVE…     190149 SC    PSB       SERVIÇO DE… &lt;NA&gt;        
+## 5 LEOPOLDO MEYER      160663 PR    PSB       Emissão Bi… &lt;NA&gt;        
 ## # ... with 7 more variables: fornecedor &lt;chr&gt;, CNPJCPF &lt;chr&gt;,
 ## #   tipoDocumento &lt;int&gt;, dataEmissao &lt;dttm&gt;, valorDocumento &lt;dbl&gt;,
 ## #   valorGlosa &lt;int&gt;, valorLíquido &lt;dbl&gt;</code></pre>
@@ -138,11 +138,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>E o segundo conjunto de dados consiste em informações do limite mensal de uso do CEAP no estado, para cada um dos estados e Distrito Federal. EX:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">sample_n</span>(limit, <span class="dv">5</span>)</code></pre></div>
 <pre><code>##    UF limite_mensal
-## 10 MA      42151.69
-## 4  AP      43374.78
-## 7  DF      30788.66
-## 25 SE      40139.26
-## 1  AC      44632.46</code></pre>
+## 20 RN      42731.99
+## 14 PA      42227.45
+## 21 RO      43672.49
+## 9  GO      35507.06
+## 5  BA      39010.85</code></pre>
 <p>Para uma melhor descrição dos tipos dos dados:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">sapply</span>(limit, class)</code></pre></div>
 <pre><code>##            UF limite_mensal 
@@ -155,6 +155,12 @@ data =<span class="st"> </span>data <span class="op">%&gt;%</span>
 </div>
 <div id="questionamentos" class="section level1">
 <h1>Questionamentos</h1>
+<div id="existiram-deputados-que-foram-outliers-no-quesito-gastos-tanto-por-gastar-muito-ou-pouco" class="section level2">
+<h2>1 - Existiram deputados que foram outliers no quesito gastos, tanto por gastar muito ou pouco ?</h2>
+</div>
+<div id="section" class="section level2">
+<h2>2 -</h2>
+</div>
 </div>
     </section>
   </div>
