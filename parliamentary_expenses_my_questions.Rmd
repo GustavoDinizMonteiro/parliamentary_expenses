@@ -10,6 +10,7 @@ output:
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(tidyverse)
+library(plotly)
 library(gridExtra)
 
 data = read_csv("./data.csv")
@@ -52,4 +53,20 @@ data = data %>%
 # Questionamentos
 ## 1 - Existiram deputados que foram outliers no quesito gastos, tanto por gastar muito ou pouco ?
 
-## 2 - 
+## 2 - Quais são os partidos campeôes de gastos em cada estado ?
+```{r}
+greatest_of_state <- data %>% 
+  group_by(UF, sgPartido) %>% 
+  summarise(gastos = sum(valorDocumento)) %>% 
+  group_by(UF) %>% 
+  top_n(1, gastos)
+
+p <- greatest_of_state %>%
+  filter(!is.na(UF)) %>% 
+  ggplot(aes(x = reorder(UF, gastos), y = gastos, text = paste(sgPartido))) +
+  labs(x='Estado', y='Gasto total') +
+  geom_point()
+
+ggplotly(p)
+```
+
